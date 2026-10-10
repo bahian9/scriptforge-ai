@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScriptForge AI</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0b12;--panel:#141420;--panel2:#1b1b2a;--line:#2c2c40;--text:#f4f2ff;--muted:#a6a3bb;--purple:#9a70ff;--purple2:#7047df;--green:#5ee0ad;--red:#ff788a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#21153d 0,#0b0b12 50%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:11px 15px;color:white;background:linear-gradient(135deg,var(--purple),var(--purple2));font-weight:700}button:disabled{opacity:.55;cursor:wait}.secondary{background:#252538;border:1px solid var(--line)}.danger{background:#40202b;border:1px solid #6d3040}
+header{max-width:1100px;margin:auto;padding:26px 20px 12px;display:flex;align-items:center;gap:13px}.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#b99bff,#6335c7);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 30px #8d62ff30}h1{font-size:23px;margin:0;letter-spacing:-.5px}header p{margin:2px 0 0;color:var(--muted);font-size:13px}.pill{margin-left:auto;border:1px solid #3d315d;color:#c9b7ff;background:#211a32;padding:5px 9px;border-radius:99px;font-size:12px}
+main{max-width:1100px;margin:0 auto;padding:14px 20px 42px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}.card{background:#141420f2;border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 15px 50px #0002;min-width:0}.wide{grid-column:1/-1}.card h2{font-size:16px;margin:0 0 13px}.sub{color:var(--muted);font-size:13px;margin:-7px 0 14px}.field{display:flex;flex-direction:column;gap:6px;margin:12px 0}.field label{font-size:13px;font-weight:650;color:#d9d5ed}.field input,.field textarea,.field select{width:100%;border:1px solid #38384e;border-radius:10px;background:#0d0d16;color:var(--text);padding:11px 12px;outline:none}.field input:focus,.field textarea:focus{border-color:var(--purple)}textarea{resize:vertical;min-height:110px}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1;min-width:0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.status{margin-top:12px;padding:10px 12px;border-radius:10px;background:#202031;color:var(--muted);font-size:13px;white-space:pre-wrap}.status.ok{color:var(--green)}.status.err{color:var(--red)}.notice{font-size:12px;color:var(--muted);margin-top:10px}.codebox{position:relative}.codebox pre{margin:0;padding:16px;background:#090910;border:1px solid #29293b;border-radius:12px;overflow:auto;white-space:pre;min-height:210px;max-height:560px;color:#e4dcff;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}.codeactions{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.codeactions span{font-size:12px;color:var(--muted)}details{border-top:1px solid var(--line);padding-top:12px;margin-top:13px}summary{cursor:pointer;color:#d8ceff;font-weight:650}.checkline{display:flex;align-items:flex-start;gap:9px;color:var(--muted);font-size:12px;margin-top:10px}.checkline input{margin-top:4px}.footer{max-width:1100px;margin:0 auto;padding:0 20px 25px;color:#817e98;font-size:12px}.spinner{display:inline-block;width:13px;height:13px;border:2px solid #ffffff60;border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:7px}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:760px){main{grid-template-columns:1fr;padding:10px 12px 28px}header{padding:20px 14px 10px}.wide{grid-column:auto}.pill{display:none}.card{padding:15px}.row{flex-direction:column;align-items:stretch;gap:0}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="logo">⌘</div><div><h1>ScriptForge <span style="color:#bba2ff">AI</span></h1><p>Seu assistente de scripts Lua para Roblox</p></div><span class="pill">BETA · CONECTE SUA IA</span></header>
+<main>
+<section class="card">
+<h2>🔌 1. Conectar IA</h2>
+<p class="sub">Use uma API compatível com o formato OpenAI Chat Completions.</p>
+<p class="sub">A conexão é feita pelo servidor, sem expor sua chave no navegador.</p>
+<div class="actions"><button id="test">Testar conexão</button></div>
+<div id="connection" class="status">Pronto para testar a função do Netlify. Configure GROQ_API_KEY nas variáveis de ambiente.</div>
+<p class="notice">Sua chave fica no servidor do Netlify. Nunca cole a chave no código do site.</p>
+</section>
+<section class="card">
+<h2>🎮 2. Estudar o jogo</h2>
+<p class="sub">Informe o jogo e o que você já sabe. A IA organiza o contexto antes de gerar o código.</p>
+<div class="field"><label for="game">Nome do jogo Roblox</label><input id="game" placeholder="Ex.: Death Ball, Blox Fruits…"></div>
+<div class="field"><label for="facts">Informações ou mecânicas conhecidas (opcional)</label><textarea id="facts" placeholder="Ex.: como funciona a bola, quais botões existem, nomes de objetos, comportamento esperado…"></textarea></div>
+<div class="actions"><button id="study">🔎 Analisar jogo</button></div>
+<div id="studyStatus" class="status">A análise usa o conhecimento do modelo e as informações que você fornecer. Sem uma ferramenta de pesquisa conectada, ela não consegue navegar na web nem inspecionar o jogo ao vivo.</div>
+</section>
+<section class="card wide">
+<h2>🧠 3. Criar script</h2>
+<div class="field"><label for="request">O que você quer que o script faça?</label><textarea id="request" placeholder="Descreva a função, os controles, a interface e o comportamento esperado…"></textarea></div>
+<div class="row"><div class="field"><label for="kind">Tipo de script</label><select id="kind"><option>LocalScript para meu próprio jogo</option><option>Script de servidor para meu próprio jogo</option><option>Ferramenta local / protótipo Lua</option><option>Script para executor (somente uso autorizado)</option></select></div><div class="field"><label for="format">Formato de resposta</label><select id="format"><option>Código completo + explicação</option><option>Somente código</option><option>Depurar código existente</option></select></div></div>
+<div class="actions"><button id="generate">✨ Gerar script com IA</button><button id="reset" class="secondary">Limpar formulário</button></div>
+<div id="genStatus" class="status">Preencha o pedido e conecte uma API para gerar código novo.</div>
+</section>
+<section class="card wide">
+<div class="codeactions"><h2 style="margin:0">💻 Resultado</h2><div class="actions" style="margin:0"><button id="copy" class="secondary">Copiar código</button><button id="download" class="secondary">Baixar .lua</button></div></div>
+<div class="codebox"><pre id="output">-- Seu script aparecerá aqui.
+-- Conecte uma IA e descreva o que deseja criar.</pre></div>
+<div class="notice">Revise e teste em um ambiente seu. O código gerado pode conter erros; nunca execute código que você não entendeu.</div>
+</section>
+</main>
+<div class="footer">ScriptForge AI · Protótipo local. A análise não equivale a inspecionar o jogo em tempo real. Não gera bypass de segurança, roubo de contas ou exploração de vulnerabilidades.</div>
+<script>
+const $ = id => document.getElementById(id);
+let gameStudy = "";
+function setStatus(id,msg,type=""){const el=$(id);el.className="status"+(type?" "+type:"");el.textContent=msg;}
+function busy(btn,on,label){btn.disabled=on;if(on){btn.dataset.old=btn.textContent;btn.innerHTML='<span class="spinner"></span>'+label;}else{btn.textContent=btn.dataset.old||label;}}
+async function askAI(messages){
+ const res=await fetch("/.netlify/functions/generate",{
+  method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({messages})
+ });
+ const data=await res.json().catch(()=>({error:"Resposta inválida do servidor."}));
+ if(!res.ok)throw new Error(data.error||("O servidor respondeu com HTTP "+res.status+"."));
+ if(!data.answer)throw new Error("A API não retornou texto.");
+ return data.answer;
+}
+const systemPrompt="Você é ScriptForge AI, assistente experiente em Luau/Roblox. Responda em português brasileiro. Gere código claro, completo e com tratamento de erros. Priorize APIs oficiais do Roblox e scripts para experiências próprias ou ambientes autorizados. Não afirme que inspecionou um jogo ou navegou na web se isso não aconteceu. Se faltarem detalhes sobre objetos/remotes, explique as suposições em vez de inventar nomes como se fossem confirmados. Não forneça roubo de contas, malware ou bypass de segurança.";
+$("test").onclick=async()=>{const b=$("test");busy(b,true,"Testando…");setStatus("connection","Testando conexão segura com o servidor…");try{const answer=await askAI([{role:"system",content:"Responda somente: Conexão funcionando."},{role:"user",content:"Teste de conexão."}]);setStatus("connection","Conectado! Resposta da IA: "+answer,"ok");}catch(e){setStatus("connection","Falha: "+e.message,"err");}finally{busy(b,false);}};
+$("study").onclick=async()=>{const game=$("game").value.trim();if(!game){setStatus("studyStatus","Digite o nome do jogo primeiro.","err");return;}const b=$("study");busy(b,true,"Analisando…");setStatus("studyStatus","A IA está organizando as informações disponíveis…");try{const facts=$("facts").value.trim();gameStudy=await askAI([{role:"system",content:systemPrompt+" Faça uma análise preliminar do jogo indicado. Separe fatos conhecidos, hipóteses e informações que precisam ser verificadas. Não alegue acesso ao jogo ou pesquisa na web. Liste mecânicas relevantes e perguntas necessárias antes de programar."},{role:"user",content:"Jogo: "+game+"\nInformações fornecidas: "+(facts||"Nenhuma.")+"\nCrie uma ficha preliminar e útil para desenvolver scripts autorizados para esse jogo."}]);setStatus("studyStatus",gameStudy,"ok");}catch(e){setStatus("studyStatus","Falha na análise: "+e.message,"err");}finally{busy(b,false);}};
+$("generate").onclick=async()=>{const request=$("request").value.trim();if(!request){setStatus("genStatus","Descreva o que o script deve fazer.","err");return;}const b=$("generate");busy(b,true,"Gerando…");setStatus("genStatus","A IA está criando o código…");$("output").textContent="Gerando…";try{const game=$("game").value.trim()||"não especificado";const facts=$("facts").value.trim();const kind=$("kind").value;const format=$("format").value;const context=gameStudy?"Análise preliminar anterior:\n"+gameStudy:"Nenhuma análise anterior foi feita.";const prompt="Jogo: "+game+"\nTipo: "+kind+"\nFormato: "+format+"\nPedido: "+request+"\nInformações do usuário: "+(facts||"Nenhuma.")+"\n"+context+"\nSe não for possível confirmar APIs/objetos específicos do jogo, identifique as suposições. Se o formato for 'Somente código', retorne apenas código em bloco markdown; caso contrário, inclua código completo e instruções de uso.";const answer=await askAI([{role:"system",content:systemPrompt},{role:"user",content:prompt}]);$("output").textContent=answer;setStatus("genStatus","Script gerado. Revise o código antes de executar.","ok");}catch(e){$("output").textContent="-- A geração falhou.\n-- "+e.message;setStatus("genStatus","Falha ao gerar: "+e.message+(e instanceof TypeError?" Pode ser bloqueio de CORS ou falta de rede no navegador.":"") ,"err");}finally{busy(b,false);}};
+$("copy").onclick=async()=>{const text=$("output").textContent;try{await navigator.clipboard.writeText(text);setStatus("genStatus","Resultado copiado para a área de transferência.","ok");}catch{const range=document.createRange();range.selectNodeContents($("output"));const sel=getSelection();sel.removeAllRanges();sel.addRange(range);setStatus("genStatus","Selecione o texto acima e copie manualmente.","");}};
+$("download").onclick=()=>{const text=$("output").textContent;const blob=new Blob([text],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="script-roblox.lua";a.click();URL.revokeObjectURL(a.href);};
+$("reset").onclick=()=>{$("request").value="";$("facts").value="";$("game").value="";$("output").textContent="-- Seu script aparecerá aqui.";gameStudy="";setStatus("studyStatus","A análise usa o conhecimento do modelo e as informações que você fornecer.");setStatus("genStatus","Formulário limpo.");};
+</script>
+</body>
+</html>
